@@ -23,10 +23,12 @@ public class ApiClient {
 	public ApiClient() {
 		ConfigManager config = ConfigManager.getInstance();
 
-		try {
-			log = new PrintStream(new FileOutputStream("logFile.txt"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+		if (log == null) {
+			try {
+				log = new PrintStream(new FileOutputStream("logFile.txt"));
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 
 		RequestSpecBuilder spec = new RequestSpecBuilder().setBaseUri(config.getBaseUrl())

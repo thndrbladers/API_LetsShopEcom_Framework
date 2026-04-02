@@ -4,6 +4,7 @@ import com.apiletsshopecom.clients.AuthClient;
 import com.apiletsshopecom.payloads.request.LoginRequest;
 import com.apiletsshopecom.payloads.request.RegisterRequest;
 import com.apiletsshopecom.payloads.response.RegisterResponse;
+import com.github.javafaker.Faker;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,10 +24,17 @@ public class AuthStepDefinitions {
 
 	}
 
-	@Given("the visitor has provided all the valid registration details {string},{string},{string},{string},{string},{string},{int},{string},{string},{string}")
+	@Given("the visitor has provided all the valid registration details {string},{string},{string},{string},{string},{string},{string},{string},{string},{string}")
 	public void the_visitor_has_provided_all_the_valid_registration_details_true(String firstName, String lastName,
-			String userEmail, String userRole, String occupation, String gender, int userMobile,
-			String userPassword, String confirmPassword, String required) {
+			String userEmail, String userRole, String occupation, String gender, String userMobile, String userPassword,
+			String confirmPassword, String required) {
+
+		Faker fake = new Faker();
+
+		if (userEmail.equalsIgnoreCase("dynamic")) {
+			userEmail = fake.letterify(userEmail + "???????") + "@test.com";
+			System.out.println("Dynamically created email for the user " + firstName + " : " + userEmail);
+		}
 
 		registerRequest = new RegisterRequest();
 		registerRequest.setFirstName(firstName);
@@ -51,20 +59,20 @@ public class AuthStepDefinitions {
 		if (reqType.equalsIgnoreCase("post")) {
 			Assert.assertEquals(authCLient.getAuthRegisterEndpoint(), endpoint);
 			registerRawResponse = authCLient.getRegisterUserRawResponse(registerRequest);
-			registerResponse = authCLient.getRegisterUserResponse(registerRequest);
+			registerResponse = registerRawResponse.as(RegisterResponse.class);
 		}
 
 	}
 
 	@Then("the API should respond with status code {int}")
 	public void the_api_should_respond_with_status_code(Integer statusCode) {
-		Assert.assertEquals(registerRawResponse.statusCode(), statusCode.intValue());
+		Assert.assertEquals(statusCode.intValue(), registerRawResponse.statusCode());
 
 	}
 
 	@Then("the response message should be {string}")
 	public void the_response_message_should_be(String string) {
-		Assert.assertEquals(registerResponse.getMessage(),"Registered Successfully");
+		Assert.assertEquals(string, registerResponse.getMessage());
 
 	}
 

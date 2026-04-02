@@ -6,7 +6,8 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "classpath:features", glue = { "stepDefinitions" })
+@CucumberOptions(features = "src/test/resources/features", glue = { "com.letsshopecom.stepdefinitions" }, plugin = {
+		"pretty" })
 public class TestRunner {
 
 }

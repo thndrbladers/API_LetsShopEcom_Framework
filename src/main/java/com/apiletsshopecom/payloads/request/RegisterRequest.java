@@ -8,7 +8,7 @@ public class RegisterRequest {
 	private String userRole;
 	private String occupation;
 	private String gender;
-	private int userMobile;
+	private String userMobile;
 	private String userPassword;
 	private String confirmPassword;
 	private boolean required;
@@ -61,14 +61,6 @@ public class RegisterRequest {
 		this.gender = gender;
 	}
 
-	public int getUserMobile() {
-		return userMobile;
-	}
-
-	public void setUserMobile(int userMobile) {
-		this.userMobile = userMobile;
-	}
-
 	public String getUserPassword() {
 		return userPassword;
 	}
@@ -93,4 +85,19 @@ public class RegisterRequest {
 		this.required = required;
 	}
 
+	public String getUserMobile() {
+		return userMobile;
+	}
+
+	public void setUserMobile(String userMobile) {
+		this.userMobile = userMobile;
+	}
+
+	@Override
+	public String toString() {
+		return "RegisterRequest [firstName=" + firstName + ", lastName=" + lastName + ", userEmail=" + userEmail
+				+ ", userRole=" + userRole + ", occupation=" + occupation + ", gender=" + gender + ", userMobile="
+				+ userMobile + ", userPassword=" + userPassword + ", confirmPassword=" + confirmPassword + ", required="
+				+ required + "]";
+	}
 }

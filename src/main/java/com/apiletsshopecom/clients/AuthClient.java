@@ -31,7 +31,7 @@ public class AuthClient {
 
 	public RegisterResponse getRegisterUserResponse(RegisterRequest registerRequest) {
 
-		return apiClient.post(AUTH_REGISTER_ENDPOINT, registerRequest).as(RegisterResponse.class);
+		return getRegisterUserRawResponse(registerRequest).as(RegisterResponse.class);
 	}
 
 	public Response getRegisterUserRawResponse(RegisterRequest registerRequest) {
