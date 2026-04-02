@@ -29,7 +29,7 @@ public class ApiClient {
 			e.printStackTrace();
 		}
 
-		RequestSpecBuilder spec = new RequestSpecBuilder().setBasePath(config.getBaseUrl())
+		RequestSpecBuilder spec = new RequestSpecBuilder().setBaseUri(config.getBaseUrl())
 				.setContentType(ContentType.JSON).setAccept(ContentType.JSON)
 				.addFilter(RequestLoggingFilter.logRequestTo(log)).addFilter(ResponseLoggingFilter.logResponseTo(log));
 
@@ -47,19 +47,19 @@ public class ApiClient {
 
 	public Response get(String endpoint) {
 
-		return given().when().post(endpoint).then().extract().response();
+		return given().when().get(endpoint).then().extract().response();
 
 	}
 
 	public Response get(String endpoint, Map<String, ?> queryParams) {
 
-		return given().queryParams(queryParams).when().post(endpoint).then().extract().response();
+		return given().queryParams(queryParams).when().get(endpoint).then().extract().response();
 
 	}
 
 	public Response get(String endpoint, Map<String, ?> queryParams, Map<String, String> headers) {
 
-		return given().queryParams(queryParams).headers(headers).when().post(endpoint).then().extract().response();
+		return given().queryParams(queryParams).headers(headers).when().get(endpoint).then().extract().response();
 
 	}
 
