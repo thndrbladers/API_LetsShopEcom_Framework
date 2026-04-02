@@ -18,7 +18,8 @@ public class AuthClient {
 
 	public String getJwtToken(LoginRequest loginRequest) {
 
-		return apiClient.post(AUTH_LOGIN_ENDPOINT, loginRequest).jsonPath().getString("token");
+		return getLoginResponse(loginRequest).getToken();
+
 	}
 
 	public LoginResponse getLoginResponse(LoginRequest loginRequest) {
