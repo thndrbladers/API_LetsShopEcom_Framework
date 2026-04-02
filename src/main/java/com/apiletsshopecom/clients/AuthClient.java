@@ -1,7 +1,9 @@
 package com.apiletsshopecom.clients;
 
 import com.apiletsshopecom.payloads.request.LoginRequest;
+import com.apiletsshopecom.payloads.request.RegisterRequest;
 import com.apiletsshopecom.payloads.response.LoginResponse;
+import com.apiletsshopecom.payloads.response.RegisterResponse;
 
 import io.restassured.response.Response;
 
@@ -26,5 +28,12 @@ public class AuthClient {
 
 		return apiClient.post(AUTH_LOGIN_ENDPOINT, loginRequest).as(LoginResponse.class);
 	}
+	
+	public RegisterResponse registerUser(RegisterRequest registerRequest) {
+		
+		return apiClient.post(AUTH_REGISTER_ENDPOINT, registerRequest).as(RegisterResponse.class);
+	}
+	
+	
 
 }
