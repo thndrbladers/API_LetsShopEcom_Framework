@@ -8,7 +8,7 @@ public class RegisterRequest {
 	private String userRole;
 	private String occupation;
 	private String gender;
-	private String userMobile;
+	private int userMobile;
 	private String userPassword;
 	private String confirmPassword;
 	private boolean required;
@@ -61,11 +61,11 @@ public class RegisterRequest {
 		this.gender = gender;
 	}
 
-	public String getUserMobile() {
+	public int getUserMobile() {
 		return userMobile;
 	}
 
-	public void setUserMobile(String userMobile) {
+	public void setUserMobile(int userMobile) {
 		this.userMobile = userMobile;
 	}
 
