@@ -10,6 +10,18 @@ Feature: User Registration
     And the response message should be "Registered Successfully"
 
     Examples:
-| firstName | lastName | userEmail               | userRole | occupation   | gender | userMobile | userPassword | confirmPassword | required |
-| Aakash v  | Kulkarni | dynamic | customer | Consultant   | Male   | 9321456780 | Nova@258     | Nova@258        | true     |
-| Meera d   | Banerjee | dynamic  | customer | Researcher   | Female | 9210345678 | Orion@369    | Orion@369       | true     |
+      | firstName | lastName | userEmail | userRole | occupation | gender | userMobile | userPassword | confirmPassword | required |
+      | Aakash v  | Kulkarni | dynamic   | customer | Consultant | Male   | 9321456780 | Nova@258     | Nova@258        | true     |
+      | Meera d   | Banerjee | dynamic   | customer | Researcher | Female | 9210345678 | Orion@369    | Orion@369       | true     |
+
+  Scenario Outline: Unsuccessful registration due to missing required fields
+    Given the visitor provides incomplete registration details with missing "<field>"
+    When the visitor sends a "POST" request to the endpoint "/api/ecom/auth/register"
+    Then the API should respond with status code 422
+    And the response should contain an error indicating that the "<field>" is required
+
+    Examples:
+      | field      |
+      | firstName  |
+      | userEmail  |
+      | userMobile |

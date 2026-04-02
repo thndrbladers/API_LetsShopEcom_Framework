@@ -40,11 +40,11 @@ public class AuthClient {
 	}
 
 	public String getAuthRegisterEndpoint() {
-		return this.AUTH_REGISTER_ENDPOINT;
+		return AUTH_REGISTER_ENDPOINT;
 	}
 
 	public String getAuthLoginEndpoint() {
-		return this.AUTH_LOGIN_ENDPOINT;
+		return AUTH_LOGIN_ENDPOINT;
 	}
 
 }
