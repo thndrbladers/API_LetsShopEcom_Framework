@@ -6,6 +6,6 @@ So that I can view the catalog and select items to purchase.
   Scenario: Add a new product to the catalog (Admin/Setup Scenario)
     Given the user is authorized with a valid token
     When the user sends a "POST" request with form-data to the endpoint "/api/ecom/product/add-product"
-    Then the API should respond with status code 201
-    And the response should contain a "productId"
-    And the response message should be "Product Added Successfully"
+    Then the addProduct API should respond with status code 201
+    And the addProduct response should contain a "productId"
+    And the addProduct response message should be "Product Added Successfully"

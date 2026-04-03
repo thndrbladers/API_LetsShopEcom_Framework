@@ -9,8 +9,8 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", glue = { "com.letsshopecom.stepdefinitions" }, plugin = {
-		"json:target/jsonReports/cucumber-report.json", "pretty" })
+@CucumberOptions(features = "src/test/resources/features/product/AddProduct.feature", glue = {
+		"com.letsshopecom.stepdefinitions" }, plugin = { "json:target/jsonReports/cucumber-report.json", "pretty" })
 public class TestRunner {
 
 	@AfterClass

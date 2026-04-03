@@ -162,7 +162,7 @@ public class ApiClient {
 		AuthClient authClient = new AuthClient();
 		LoginRequest loginRequest = new LoginRequest();
 		loginRequest.setUserEmail(ConfigManager.getInstance().getProperty("test.email"));
-		loginRequest.setUserEmail(ConfigManager.getInstance().getProperty("test.password"));
+		loginRequest.setUserPassword(ConfigManager.getInstance().getProperty("test.password"));
 		LoginResponse loginResponse = authClient.getLoginResponse(loginRequest);
 		String token = loginResponse.getToken();
 		String userId = loginResponse.getUserId();

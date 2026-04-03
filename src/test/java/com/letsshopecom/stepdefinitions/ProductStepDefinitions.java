@@ -16,11 +16,13 @@ import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.response.Response;
 
 public class ProductStepDefinitions {
 
 	private ProductClient productClient;
 	private AddProductResponse addProductResponse;
+	private Response rawResponse;
 
 	public ProductStepDefinitions() {
 
@@ -47,19 +49,33 @@ public class ProductStepDefinitions {
 			productMap.put("productPrice", "175000");
 			productMap.put("productDescription", "iPhone 17 pro max 256 GB");
 
-			File file = new File(System.getProperty("user.dir") + "src/test/resources/testdata/iphone.jpg");
+			File file = new File(System.getProperty("user.dir") + "/src/test/resources/testdata/iphone.jpg");
 
-			addProductResponse = productClient.addProduct(endpoint, productMap, file, "file")
-					.as(AddProductResponse.class);
+			rawResponse = productClient.addProduct(endpoint, productMap, file, "file");
+			
+			System.out.println(rawResponse.asPrettyString());
+			addProductResponse = rawResponse.as(AddProductResponse.class);
 
 		}
 
 	}
 
-	@Then("the response should contain a {string}")
-	public void the_response_should_contain_a(String message) {
-
-		Assert.assertEquals(message, addProductResponse.getMessage());
+	@Then("the addProduct API should respond with status code {int}")
+	public void the_add_product_api_should_respond_with_status_code(Integer statusCode) {
+		Assert.assertEquals(rawResponse.statusCode(), statusCode.intValue());
 
 	}
+
+	@Then("the addProduct response should contain a {string}")
+	public void the_add_product_response_should_contain_a(String productId) {
+		Assert.assertNotNull(productId, addProductResponse.getProductId());
+
+	}
+
+	@Then("the addProduct response message should be {string}")
+	public void the_add_product_response_message_should_be(String message) {
+
+		Assert.assertEquals(message, addProductResponse.getMessage());
+	}
+
 }
