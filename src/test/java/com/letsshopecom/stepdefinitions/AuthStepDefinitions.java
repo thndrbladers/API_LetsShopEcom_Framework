@@ -10,7 +10,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.junit.Assert;
-import static org.junit.Assert.*;
 
 public class AuthStepDefinitions {
 
@@ -18,6 +17,12 @@ public class AuthStepDefinitions {
 	private RegisterRequest registerRequest;
 	private RegisterResponse registerResponse;
 	private Response registerRawResponse;
+
+	/*
+	 * private static final Map<String, String> ERROR_MAP = Map.of("firstName",
+	 * "First Name is required!", "userEmail", "Email is required!", "userMobile",
+	 * "Phone Number is required!");
+	 */
 
 	public AuthStepDefinitions() {
 
@@ -55,7 +60,7 @@ public class AuthStepDefinitions {
 	public void the_visitor_sends_a_request_to_the_endpoint(String reqType, String endpoint) {
 
 		if (reqType.equalsIgnoreCase("post")) {
-			Assert.assertEquals(authClient.getAuthRegisterEndpoint(), endpoint);
+			Assert.assertEquals(endpoint, authClient.getAuthRegisterEndpoint());
 			registerRawResponse = authClient.getRegisterUserRawResponse(registerRequest);
 			registerResponse = registerRawResponse.as(RegisterResponse.class);
 		}
@@ -69,8 +74,8 @@ public class AuthStepDefinitions {
 	}
 
 	@Then("the response message should be {string}")
-	public void the_response_message_should_be(String string) {
-		Assert.assertEquals(string, registerResponse.getMessage());
+	public void the_response_message_should_be(String message) {
+		Assert.assertEquals(message, registerResponse.getMessage());
 
 	}
 
@@ -80,12 +85,20 @@ public class AuthStepDefinitions {
 				"jordan.test" + System.currentTimeMillis() + "@example.com", "Customer", "Engineer", "Male",
 				"9876543210", "SecurePass123!", "SecurePass123!", "true");
 
+		/*
+		 * Field f = null; try { f = RegisterRequest.class.getDeclaredField(field); }
+		 * catch (NoSuchFieldException e) { e.printStackTrace(); }
+		 * f.setAccessible(true); try { f.set(registerRequest, null); } catch
+		 * (IllegalArgumentException e) { e.printStackTrace(); } catch
+		 * (IllegalAccessException e) { e.printStackTrace(); }
+		 */
+
 		if (field.equalsIgnoreCase("firstName")) {
-			registerRequest.setFirstName("");
+			registerRequest.setFirstName(null);
 		} else if (field.equalsIgnoreCase("userEmail")) {
-			registerRequest.setUserEmail("");
+			registerRequest.setUserEmail(null);
 		} else if (field.equalsIgnoreCase("userMobile")) {
-			registerRequest.setUserMobile("");
+			registerRequest.setUserMobile(null);
 		}
 
 	}
@@ -94,12 +107,38 @@ public class AuthStepDefinitions {
 	public void the_response_should_contain_an_error_indicating_that_the_is_required(String field) {
 
 		if (field.equalsIgnoreCase("firstName")) {
-			Assert.assertEquals(registerResponse.getError(), "First Name is required!");
+			Assert.assertEquals("First Name is required!", registerResponse.getError());
 		} else if (field.equalsIgnoreCase("userEmail")) {
-			Assert.assertEquals(registerResponse.getError(), "Email is required!");
+			Assert.assertEquals("Email is required!", registerResponse.getError());
 		} else if (field.equalsIgnoreCase("userMobile")) {
-			Assert.assertEquals(registerResponse.getError(), "Phone Number is required!");
+			Assert.assertEquals("Phone Number is required!", registerResponse.getError());
 		}
+
+		/* Assert.assertEquals(ERROR_MAP.get(field), registerResponse.getError()); */
+
+	}
+
+	@Given("the visitor provides registration details using an email that is already registered")
+	public void the_visitor_provides_registration_details_using_an_email_that_is_already_registered() {
+
+		the_visitor_has_provided_all_the_valid_registration_details_true("Jordan", "Smith",
+				"jordan.test" + System.currentTimeMillis() + "@example.com", "Customer", "Engineer", "Male",
+				"9876543210", "SecurePass123!", "SecurePass123!", "true");
+
+		registerResponse = authClient.getRegisterUserResponse(registerRequest);
+
+		System.out.println(registerRequest.getUserEmail());
+
+		the_visitor_has_provided_all_the_valid_registration_details_true("Jordan", "Smith",
+				registerRequest.getUserEmail(), "Customer", "Engineer", "Male", "9876543210", "SecurePass123!",
+				"SecurePass123!", "true");
+
+	}
+
+	@Then("the response message should indicate {string}")
+	public void the_response_message_should_indicate(String message) {
+
+		Assert.assertEquals(message, registerResponse.getMessage());
 
 	}
 
