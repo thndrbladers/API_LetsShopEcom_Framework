@@ -15,7 +15,7 @@ Body:
     "userPassword": null
 }
 HTTP/1.1 400 Bad Request
-Date: Fri, 03 Apr 2026 18:41:05 GMT
+Date: Fri, 03 Apr 2026 18:43:49 GMT
 Server: Apache/2.4.52 (Ubuntu)
 Content-Security-Policy: default-src 'self';base-uri 'self';block-all-mixed-content;font-src 'self' https: data:;frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests
 X-DNS-Prefetch-Control: off

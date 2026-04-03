@@ -167,7 +167,6 @@ public class ApiClient {
 		String token = loginResponse.getToken();
 		String userId = loginResponse.getUserId();
 		requestSpec.header("Authorization", token);
-		requestSpec.header("Authorization", token);
 
 		ConfigManager.getInstance().setProperty("auth.token", token);
 		ConfigManager.getInstance().setProperty("userId", userId);
