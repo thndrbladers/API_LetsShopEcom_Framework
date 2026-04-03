@@ -1,9 +1,12 @@
 package com.letsshopecom.stepdefinitions;
 
 import com.apiletsshopecom.clients.AuthClient;
+import com.apiletsshopecom.payloads.request.LoginRequest;
 import com.apiletsshopecom.payloads.request.RegisterRequest;
+import com.apiletsshopecom.payloads.response.LoginResponse;
 import com.apiletsshopecom.payloads.response.RegisterResponse;
 import com.github.javafaker.Faker;
+import com.letsshopecom.utils.TestDataGenerator;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -16,8 +19,9 @@ public class AuthStepDefinitions {
 	private AuthClient authClient;
 	private RegisterRequest registerRequest;
 	private RegisterResponse registerResponse;
-	private Response registerRawResponse;
-
+	private Response rawResponse;
+	private LoginRequest loginRequest;
+	private LoginResponse loginResponse;
 	/*
 	 * private static final Map<String, String> ERROR_MAP = Map.of("firstName",
 	 * "First Name is required!", "userEmail", "Email is required!", "userMobile",
@@ -36,7 +40,7 @@ public class AuthStepDefinitions {
 		Faker fake = new Faker();
 
 		if (userEmail.equalsIgnoreCase("dynamic")) {
-			userEmail = fake.letterify(userEmail + "???????") + "@test.com";
+			userEmail = fake.internet().emailAddress();
 			System.out.println("Dynamically created email for the user " + firstName + " : " + userEmail);
 		}
 
@@ -59,23 +63,24 @@ public class AuthStepDefinitions {
 	@When("the visitor sends a {string} request to the endpoint {string}")
 	public void the_visitor_sends_a_request_to_the_endpoint(String reqType, String endpoint) {
 
-		if (reqType.equalsIgnoreCase("post")) {
+		if (reqType.equalsIgnoreCase("post") && endpoint.contains("register")) {
 			Assert.assertEquals(endpoint, authClient.getAuthRegisterEndpoint());
-			registerRawResponse = authClient.getRegisterUserRawResponse(registerRequest);
-			registerResponse = registerRawResponse.as(RegisterResponse.class);
+			rawResponse = authClient.getRawResponse(registerRequest);
+			registerResponse = rawResponse.as(RegisterResponse.class);
 		}
-
 	}
 
 	@Then("the API should respond with status code {int}")
 	public void the_api_should_respond_with_status_code(Integer statusCode) {
-		Assert.assertEquals(statusCode.intValue(), registerRawResponse.statusCode());
+
+		Assert.assertEquals(rawResponse.statusCode(), statusCode.intValue());
 
 	}
 
 	@Then("the response message should be {string}")
 	public void the_response_message_should_be(String message) {
-		Assert.assertEquals(message, registerResponse.getMessage());
+
+		Assert.assertEquals(message, rawResponse.jsonPath().getString("message"));
 
 	}
 
@@ -133,12 +138,56 @@ public class AuthStepDefinitions {
 				registerRequest.getUserEmail(), "Customer", "Engineer", "Male", "9876543210", "SecurePass123!",
 				"SecurePass123!", "true");
 
+		// Other way
+
+		/*
+		 * registerRequest = TestDataGenerator.generateRegisterUserData();
+		 * this.authClient = new AuthClient(); registerResponse =
+		 * authClient.getRegisterUserResponse(registerRequest); String reuseEmail =
+		 * registerRequest.getUserEmail(); System.out.println(reuseEmail);
+		 * registerRequest = TestDataGenerator.generateRegisterUserData();
+		 * registerRequest.setUserEmail(reuseEmail);
+		 */
+
 	}
 
 	@Then("the response message should indicate {string}")
 	public void the_response_message_should_indicate(String message) {
 
 		Assert.assertEquals(message, registerResponse.getMessage());
+
+	}
+
+	@Given("the user possesses valid login credentials")
+	public void the_user_possesses_valid_login_credentials() {
+
+		registerRequest = TestDataGenerator.generateRegisterUserData();
+		this.authClient = new AuthClient();
+		authClient.getRegisterUserResponse(registerRequest);
+		loginRequest = new LoginRequest();
+
+		loginRequest.setUserEmail(registerRequest.getUserEmail());
+		loginRequest.setUserPassword(registerRequest.getUserPassword());
+
+	}
+
+	@When("the user sends a {string} request to the endpoint {string}")
+	public void the_user_sends_a_request_to_the_endpoint(String reqType, String endpoint) {
+
+		if (reqType.equalsIgnoreCase("post") && endpoint.contains("login")) {
+			Assert.assertEquals(endpoint, authClient.getAuthLoginEndpoint());
+			rawResponse = authClient.getRawResponse(loginRequest);
+			loginResponse = rawResponse.as(LoginResponse.class);
+		}
+
+	}
+
+	@Then("the response body should contain a valid JWT {string}, {string} and message {string}")
+	public void the_response_body_should_contain_a_valid_jwt_and_message(String token, String userId, String message) {
+
+		Assert.assertNotNull(token);
+		Assert.assertNotNull(userId);
+		Assert.assertEquals(message, loginResponse.getMessage());
 
 	}
 

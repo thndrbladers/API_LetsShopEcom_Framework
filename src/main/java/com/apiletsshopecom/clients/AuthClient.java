@@ -31,12 +31,16 @@ public class AuthClient {
 
 	public RegisterResponse getRegisterUserResponse(RegisterRequest registerRequest) {
 
-		return getRegisterUserRawResponse(registerRequest).as(RegisterResponse.class);
+		return getRawResponse(registerRequest).as(RegisterResponse.class);
 	}
 
-	public Response getRegisterUserRawResponse(RegisterRequest registerRequest) {
+	public Response getRawResponse(RegisterRequest registerRequest) {
 
 		return apiClient.post(AUTH_REGISTER_ENDPOINT, registerRequest);
+	}
+
+	public Response getRawResponse(LoginRequest loginRequest) {
+		return apiClient.post(AUTH_LOGIN_ENDPOINT, loginRequest);
 	}
 
 	public String getAuthRegisterEndpoint() {
