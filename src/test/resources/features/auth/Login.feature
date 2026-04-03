@@ -8,3 +8,14 @@ So that I can receive a secure JWT token to access my account and place orders.
     Then the API should respond with status code 200
     And the response body should contain a valid JWT "token", "userId" and message "Login Successfully"
     And the response message should be "Login Successfully"
+
+  Scenario Outline: Verify login failure with invalid credentials
+    Given the user possesses credentials with email "<email>" and password "<password>"
+    When the user sends a "POST" request to the endpoint "/api/ecom/auth/login"
+    Then the API should respond with status code 400
+    And the response message should be "Incorrect email or password."
+
+    Examples:
+      | email                | password     |
+      | valid@example.com    | wrongpass123 |
+      | unregistered@abc.com | ValidPass!1  |

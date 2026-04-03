@@ -30,4 +30,4 @@ Feature: User Registration
     Given the visitor provides registration details using an email that is already registered
     When the visitor sends a "POST" request to the endpoint "/api/ecom/auth/register"
     Then the API should respond with status code 400
-    And the response message should indicate "User already exisits with this Email Id!"
+    And the response message should be "User already exisits with this Email Id!"

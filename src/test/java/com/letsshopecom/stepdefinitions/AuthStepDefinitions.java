@@ -151,13 +151,6 @@ public class AuthStepDefinitions {
 
 	}
 
-	@Then("the response message should indicate {string}")
-	public void the_response_message_should_indicate(String message) {
-
-		Assert.assertEquals(message, registerResponse.getMessage());
-
-	}
-
 	@Given("the user possesses valid login credentials")
 	public void the_user_possesses_valid_login_credentials() {
 
@@ -188,6 +181,15 @@ public class AuthStepDefinitions {
 		Assert.assertNotNull(token);
 		Assert.assertNotNull(userId);
 		Assert.assertEquals(message, loginResponse.getMessage());
+
+	}
+
+	@Given("the user possesses credentials with email {string} and password {string}")
+	public void the_user_possesses_credentials_with_email_and_password(String email, String password) {
+		this.authClient = new AuthClient();
+		loginRequest = new LoginRequest();
+		loginRequest.setUserEmail(email);
+		loginRequest.setUserPassword(password);
 
 	}
 
