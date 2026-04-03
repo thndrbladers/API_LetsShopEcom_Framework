@@ -76,4 +76,8 @@ public class ConfigManager {
 		return this.properties.getProperty("auth.token");
 	}
 
+	public void setProperty(String key, String token) {
+		this.properties.setProperty(key, token);
+	}
+
 }

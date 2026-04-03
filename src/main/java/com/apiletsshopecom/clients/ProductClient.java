@@ -1,13 +1,20 @@
 package com.apiletsshopecom.clients;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.apiletsshopecom.config.ConfigManager;
 import com.apiletsshopecom.payloads.request.AddProductRequest;
 import com.apiletsshopecom.payloads.request.LoginRequest;
+import com.apiletsshopecom.payloads.response.AddProductResponse;
 import com.apiletsshopecom.payloads.response.LoginResponse;
 
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 
 public class ProductClient {
 
@@ -21,26 +28,21 @@ public class ProductClient {
 		this.authClient = new AuthClient();
 	}
 
-	public Response addProduct(String userEmail, String password, AddProductRequest addProductRequest) {
+	public Response addProduct(String endpoint, Map<String, String> formParams, File file, String fileFieldName) {
 
-		LoginRequest loginRequest = new LoginRequest();
-		loginRequest.setUserEmail(userEmail);
-		loginRequest.setUserPassword(password);
+		apiClient.withAuthDefaultTestAccount();
 
-		LoginResponse loginResponse = authClient.getLoginResponse(loginRequest);
-
-		String token = loginResponse.getToken();
-		String productAddedBy = loginResponse.getUserId();
-		if (token == null || productAddedBy == null) {
-			throw new RuntimeException("Login failed for user: " + userEmail);
-		}
-
-		addProductRequest.setProductFor(productAddedBy);
-
-		Map<String, String> headers = new HashMap<>();
-		headers.put("Authorization", token);
-
-		return apiClient.post(ADD_PRODUCT_ENDPOINT, addProductRequest, headers);
+		return apiClient.post(ADD_PRODUCT_ENDPOINT, formParams, file, fileFieldName);
 	}
+
+	public String getAddProductEndpoint() {
+		return ADD_PRODUCT_ENDPOINT;
+	}
+
+	public String getAllProductEndpoint() {
+		return ALL_PRODUCT_ENDPOINT;
+	}
+	
+	
 
 }

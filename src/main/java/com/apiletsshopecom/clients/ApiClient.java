@@ -1,11 +1,14 @@
 package com.apiletsshopecom.clients;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.Map;
 
 import com.apiletsshopecom.config.ConfigManager;
+import com.apiletsshopecom.payloads.request.LoginRequest;
+import com.apiletsshopecom.payloads.response.LoginResponse;
 
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
@@ -79,6 +82,13 @@ public class ApiClient {
 
 	}
 
+	public Response post(String endpoint, Map<String, String> formParams, File file, String fileFieldName) {
+
+		return given().contentType(ContentType.MULTIPART).multiPart(fileFieldName, file).formParams(formParams).when()
+				.post(endpoint).then().extract().response();
+
+	}
+
 	public Response post(String endpoint, Object body, Map<String, String> headers) {
 
 		return given().headers(headers).body(body).when().post(endpoint).then().extract().response();
@@ -145,6 +155,23 @@ public class ApiClient {
 	public ApiClient withAuth() {
 		String token = ConfigManager.getInstance().getAuthToken();
 		requestSpec.header("Authorization", "Bearer " + token);
+		return this;
+	}
+
+	public ApiClient withAuthDefaultTestAccount() {
+		AuthClient authClient = new AuthClient();
+		LoginRequest loginRequest = new LoginRequest();
+		loginRequest.setUserEmail(ConfigManager.getInstance().getProperty("test.email"));
+		loginRequest.setUserEmail(ConfigManager.getInstance().getProperty("test.password"));
+		LoginResponse loginResponse = authClient.getLoginResponse(loginRequest);
+		String token = loginResponse.getToken();
+		String userId = loginResponse.getUserId();
+		requestSpec.header("Authorization", token);
+		requestSpec.header("Authorization", token);
+
+		ConfigManager.getInstance().setProperty("auth.token", token);
+		ConfigManager.getInstance().setProperty("userId", userId);
+
 		return this;
 	}
 
