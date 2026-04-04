@@ -1,19 +1,26 @@
 package com.apiletsshopecom.hooks;
 
-import com.apiletsshopecom.clients.AuthClient;
-import com.apiletsshopecom.payloads.request.LoginRequest;
-import com.apiletsshopecom.payloads.request.RegisterRequest;
-import com.letsshopecom.stepdefinitions.AuthStepDefinitions;
-import com.letsshopecom.utils.TestDataGenerator;
+import io.cucumber.java.After;
 
-import io.cucumber.java.Before;
+import com.apiletsshopecom.clients.ProductClient;
+import com.apiletsshopecom.payloads.response.DeleteProductResponse;
+import com.letsshopecom.utils.ScenarioContext;
 
 public class Hooks {
+	private ScenarioContext context;
 
+	public Hooks(ScenarioContext context) {
+		this.context = context;
+	}
 
-	public void beforeInvalidLoginScenarios() {
+	@After("@AddProduct")
+	public void deleteProduct() {
+		ProductClient prodClient = new ProductClient();
+		String productId = context.getRawResponse().jsonPath().getString("productId");
+		System.out.println(productId);
+		DeleteProductResponse deleteProduct = prodClient.deleteProductResponse(productId);
+		System.out.println("Deleted the Product : " + productId + deleteProduct.toString());
 
-		
 	}
 
 }

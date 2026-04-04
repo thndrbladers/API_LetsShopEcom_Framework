@@ -11,12 +11,21 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.5</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit47</artifactId>
+						<version>3.5.5</version>
+					</dependency>
+				</dependencies>
 				<configuration>
 					<includes>
 						<include>**/*Runner.java</include>
 					</includes>
 					<parallel>methods</parallel>
-					<useUnlimitedThreads>true</useUnlimitedThreads>
+					<threadCount>2</threadCount>
+					<perCoreThreadCount>false</perCoreThreadCount>
+					<!--<useUnlimitedThreads>true</useUnlimitedThreads>-->
 				</configuration>
 			</plugin>
 			<plugin>

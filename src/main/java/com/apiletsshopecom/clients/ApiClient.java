@@ -134,9 +134,10 @@ public class ApiClient {
 
 	}
 
-	public Response delete(String endpoint, String body) {
+	public Response delete(String endpoint, String pathParam) {
 
-		return given().body(body).when().delete(endpoint).then().extract().response();
+		return given().pathParam("pathParam", pathParam).when().delete(endpoint + "/{pathParam}").then().extract()
+				.response();
 
 	}
 

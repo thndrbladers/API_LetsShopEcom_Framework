@@ -49,6 +49,7 @@ public class ProductStepDefinitions {
 			productMap.put("productCategory", "electronics");
 			productMap.put("productSubCategory", "mobiles");
 			productMap.put("productPrice", "175000");
+			productMap.put("productFor", "men");
 			productMap.put("productDescription", "iPhone 17 pro max 256 GB");
 
 			File file = new File(System.getProperty("user.dir") + "/src/test/resources/testdata/iphone.jpg");
