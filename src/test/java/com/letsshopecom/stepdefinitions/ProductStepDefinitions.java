@@ -12,6 +12,7 @@ import com.apiletsshopecom.config.ConfigManager;
 import com.apiletsshopecom.payloads.request.AddProductRequest;
 import com.apiletsshopecom.payloads.response.AddProductResponse;
 import com.github.javafaker.Faker;
+import com.letsshopecom.utils.ScenarioContext;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -23,9 +24,10 @@ public class ProductStepDefinitions {
 	private ProductClient productClient;
 	private AddProductResponse addProductResponse;
 	private Response rawResponse;
+	private final ScenarioContext context;
 
-	public ProductStepDefinitions() {
-
+	public ProductStepDefinitions(ScenarioContext context) {
+		this.context = context;
 	}
 
 	@Given("the user is authorized with a valid token")
@@ -51,31 +53,20 @@ public class ProductStepDefinitions {
 
 			File file = new File(System.getProperty("user.dir") + "/src/test/resources/testdata/iphone.jpg");
 
-			rawResponse = productClient.addProduct(endpoint, productMap, file, "file");
-			
+			rawResponse = productClient.addProduct(endpoint, productMap, file, "productImage");
+
 			System.out.println(rawResponse.asPrettyString());
 			addProductResponse = rawResponse.as(AddProductResponse.class);
+
+			context.setRawResponse(rawResponse);
 
 		}
 
 	}
 
-	@Then("the addProduct API should respond with status code {int}")
-	public void the_add_product_api_should_respond_with_status_code(Integer statusCode) {
-		Assert.assertEquals(rawResponse.statusCode(), statusCode.intValue());
-
-	}
-
-	@Then("the addProduct response should contain a {string}")
-	public void the_add_product_response_should_contain_a(String productId) {
+	@Then("the response should contain a {string}")
+	public void the_response_should_contain_a(String productId) {
 		Assert.assertNotNull(productId, addProductResponse.getProductId());
-
-	}
-
-	@Then("the addProduct response message should be {string}")
-	public void the_add_product_response_message_should_be(String message) {
-
-		Assert.assertEquals(message, addProductResponse.getMessage());
 	}
 
 }

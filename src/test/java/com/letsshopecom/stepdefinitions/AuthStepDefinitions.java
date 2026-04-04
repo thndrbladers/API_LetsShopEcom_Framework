@@ -6,6 +6,7 @@ import com.apiletsshopecom.payloads.request.RegisterRequest;
 import com.apiletsshopecom.payloads.response.LoginResponse;
 import com.apiletsshopecom.payloads.response.RegisterResponse;
 import com.github.javafaker.Faker;
+import com.letsshopecom.utils.ScenarioContext;
 import com.letsshopecom.utils.TestDataGenerator;
 
 import io.cucumber.java.en.Given;
@@ -22,13 +23,15 @@ public class AuthStepDefinitions {
 	private Response rawResponse;
 	private LoginRequest loginRequest;
 	private LoginResponse loginResponse;
+	private final ScenarioContext context;
 	/*
 	 * private static final Map<String, String> ERROR_MAP = Map.of("firstName",
 	 * "First Name is required!", "userEmail", "Email is required!", "userMobile",
 	 * "Phone Number is required!");
 	 */
 
-	public AuthStepDefinitions() {
+	public AuthStepDefinitions(ScenarioContext context) {
+		this.context = context;
 
 	}
 
@@ -66,22 +69,10 @@ public class AuthStepDefinitions {
 		if (reqType.equalsIgnoreCase("post") && endpoint.contains("register")) {
 			Assert.assertEquals(endpoint, authClient.getAuthRegisterEndpoint());
 			rawResponse = authClient.getRawResponse(registerRequest);
+
 			registerResponse = rawResponse.as(RegisterResponse.class);
+			context.setRawResponse(rawResponse);
 		}
-	}
-
-	@Then("the API should respond with status code {int}")
-	public void the_api_should_respond_with_status_code(Integer statusCode) {
-
-		Assert.assertEquals(rawResponse.statusCode(), statusCode.intValue());
-
-	}
-
-	@Then("the response message should be {string}")
-	public void the_response_message_should_be(String message) {
-
-		Assert.assertEquals(message, rawResponse.jsonPath().getString("message"));
-
 	}
 
 	@Given("the visitor provides incomplete registration details with missing {string}")
@@ -171,6 +162,7 @@ public class AuthStepDefinitions {
 			Assert.assertEquals(endpoint, authClient.getAuthLoginEndpoint());
 			rawResponse = authClient.getRawResponse(loginRequest);
 			loginResponse = rawResponse.as(LoginResponse.class);
+			context.setRawResponse(rawResponse);
 		}
 
 	}
