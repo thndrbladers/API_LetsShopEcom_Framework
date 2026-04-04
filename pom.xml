@@ -23,7 +23,6 @@
 						<include>**/*Runner.java</include>
 					</includes>
 					<parallel>methods</parallel>
-					<parallel>classes</parallel>
 					<threadCount>2</threadCount>
 					<!--<useUnlimitedThreads>true</useUnlimitedThreads>-->
 				</configuration>
