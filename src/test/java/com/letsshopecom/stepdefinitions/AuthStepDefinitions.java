@@ -32,6 +32,7 @@ public class AuthStepDefinitions {
 
 	public AuthStepDefinitions(ScenarioContext context) {
 		this.context = context;
+		System.out.println("parallel");
 
 	}
 
