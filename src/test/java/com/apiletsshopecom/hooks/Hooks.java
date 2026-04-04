@@ -1,6 +1,8 @@
 package com.apiletsshopecom.hooks;
 
 import io.cucumber.java.After;
+import io.cucumber.java.Before;
+import io.cucumber.java.Scenario;
 
 import com.apiletsshopecom.clients.ProductClient;
 import com.apiletsshopecom.payloads.response.DeleteProductResponse;

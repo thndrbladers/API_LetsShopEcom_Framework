@@ -9,9 +9,10 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", glue = {
-		"com.letsshopecom.stepdefinitions" }, plugin = { "json:target/jsonReports/cucumber-report.json", "pretty" })
-public class TestRunner {
+@CucumberOptions(features = "src/test/resources/features", glue = { "com.letsshopecom.stepdefinitions",
+		"com.apiletsshopecom.hooks" }, plugin = { "json:target/jsonReports/cucumber-report.json",
+				"pretty" }, tags = "@Regression")
+public class TestRegressionRunner {
 
 	@AfterClass
 	public static void tearDown() {

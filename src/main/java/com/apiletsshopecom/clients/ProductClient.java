@@ -49,6 +49,7 @@ public class ProductClient {
 	}
 
 	public Response deleteProductRawResponse(String productId) {
+		apiClient.withAuthDefaultTestAccount();
 		return apiClient.delete(DELETE_PRODUCT, productId);
 	}
 

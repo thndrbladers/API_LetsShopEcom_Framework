@@ -23,8 +23,8 @@
 						<include>**/*Runner.java</include>
 					</includes>
 					<parallel>methods</parallel>
+					<parallel>classes</parallel>
 					<threadCount>2</threadCount>
-					<perCoreThreadCount>false</perCoreThreadCount>
 					<!--<useUnlimitedThreads>true</useUnlimitedThreads>-->
 				</configuration>
 			</plugin>
