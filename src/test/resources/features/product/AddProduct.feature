@@ -14,7 +14,7 @@ So that I can view the catalog and select items to purchase.
   @Regression
   Scenario: Retrieve all available products successfully
     Given the user is authorized with a valid token
-    When the user sends a "GET" request to the endpoint "/api/ecom/product/get-all-products"
+    When the user sends a "POST" get all products request to the endpoint "/api/ecom/product/get-all-products"
     Then the API should respond with status code 200
     And the response should contain a list of products
     And each product should have a valid _id, productName, and productPrice

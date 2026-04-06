@@ -70,6 +70,10 @@ public class ApiClient {
 
 	// ── POST ──────────────────────────────────────────────────────────────
 
+	public Response post(String allProductEndpoint) {
+		return given().when().post(allProductEndpoint).then().extract().response();
+	}
+
 	public Response post(String endpoint, String body) {
 
 		return given().body(body).when().post(endpoint).then().extract().response();

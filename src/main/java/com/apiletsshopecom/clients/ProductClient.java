@@ -58,7 +58,7 @@ public class ProductClient {
 	}
 
 	public Response getProductsRawResponse() {
-		return apiClient.get(ALL_PRODUCT_ENDPOINT);
+		return apiClient.post(ALL_PRODUCT_ENDPOINT);
 	}
 
 }

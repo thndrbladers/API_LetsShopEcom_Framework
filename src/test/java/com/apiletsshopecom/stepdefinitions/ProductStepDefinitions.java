@@ -43,8 +43,6 @@ public class ProductStepDefinitions {
 
 	@When("the user sends a {string} request with form-data to the endpoint {string}")
 	public void the_user_sends_a_request_with_form_data_to_the_endpoint(String reqType, String endpoint) {
-		System.out.println("dassaasdasd");
-
 		if (reqType.equalsIgnoreCase("post") && endpoint.contains("add-product")) {
 			Assert.assertEquals(endpoint, productClient.getAddProductEndpoint());
 
@@ -67,18 +65,25 @@ public class ProductStepDefinitions {
 
 			context.setRawResponse(rawResponse);
 
-		} else if (reqType.equalsIgnoreCase("get") && endpoint.contains("get-all-products")) {
+		}
+
+	}
+
+	@When("the user sends a {string} get all products request to the endpoint {string}")
+	public void the_user_sends_a_get_all_products_request_to_the_endpoint(String reqType, String endpoint) {
+
+		if (reqType.equalsIgnoreCase("post") && endpoint.contains("get-all-products")) {
 			Assert.assertEquals(endpoint, productClient.getAllProductEndpoint());
 
 			getProductsResponse = new GetProductsResponse();
+
 			rawResponse = productClient.getProductsRawResponse();
 			context.setRawResponse(rawResponse);
+
+			System.out.println(rawResponse.asPrettyString());
 			getProductsResponse = rawResponse.as(GetProductsResponse.class);
-			
-			System.out.println("dassaasdasd");
 
 		}
-
 	}
 
 	@Then("the response should contain a {string}")
@@ -102,7 +107,7 @@ public class ProductStepDefinitions {
 			Product prod = productIT.next();
 			Assert.assertNotNull(prod.get_id());
 			Assert.assertNotNull(prod.getProductName());
-			Assert.assertNotNull(prod.getProductPrice());
+			Assert.assertNotNull(Integer.valueOf(prod.getProductPrice()));
 
 		}
 
