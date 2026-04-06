@@ -1,4 +1,4 @@
-package com.letsshopecom.utils;
+package com.apiletsshopecom.utils;
 
 import io.restassured.response.Response;
 

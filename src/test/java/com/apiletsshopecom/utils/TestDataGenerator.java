@@ -1,4 +1,4 @@
-package com.letsshopecom.utils;
+package com.apiletsshopecom.utils;
 
 import com.apiletsshopecom.payloads.request.RegisterRequest;
 import com.github.javafaker.Faker;

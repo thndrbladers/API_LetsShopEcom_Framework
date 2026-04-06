@@ -1,13 +1,13 @@
-package com.letsshopecom.stepdefinitions;
+package com.apiletsshopecom.stepdefinitions;
 
 import com.apiletsshopecom.clients.AuthClient;
 import com.apiletsshopecom.payloads.request.LoginRequest;
 import com.apiletsshopecom.payloads.request.RegisterRequest;
 import com.apiletsshopecom.payloads.response.LoginResponse;
 import com.apiletsshopecom.payloads.response.RegisterResponse;
+import com.apiletsshopecom.utils.ScenarioContext;
+import com.apiletsshopecom.utils.TestDataGenerator;
 import com.github.javafaker.Faker;
-import com.letsshopecom.utils.ScenarioContext;
-import com.letsshopecom.utils.TestDataGenerator;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;

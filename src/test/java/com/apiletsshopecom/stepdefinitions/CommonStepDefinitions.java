@@ -1,8 +1,8 @@
-package com.letsshopecom.stepdefinitions;
+package com.apiletsshopecom.stepdefinitions;
 
 import org.junit.Assert;
 
-import com.letsshopecom.utils.ScenarioContext;
+import com.apiletsshopecom.utils.ScenarioContext;
 
 import io.cucumber.java.en.Then;
 

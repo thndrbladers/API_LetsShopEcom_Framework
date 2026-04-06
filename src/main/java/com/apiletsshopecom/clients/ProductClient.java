@@ -9,6 +9,7 @@ import com.apiletsshopecom.payloads.request.AddProductRequest;
 import com.apiletsshopecom.payloads.request.LoginRequest;
 import com.apiletsshopecom.payloads.response.AddProductResponse;
 import com.apiletsshopecom.payloads.response.DeleteProductResponse;
+import com.apiletsshopecom.payloads.response.GetProductsResponse;
 import com.apiletsshopecom.payloads.response.LoginResponse;
 
 import io.restassured.RestAssured;
@@ -26,11 +27,11 @@ public class ProductClient {
 
 	public ProductClient() {
 		this.apiClient = new ApiClient();
+		// Product Client will always need authenticated token.
+		apiClient.withAuthDefaultTestAccount();
 	}
 
 	public Response addProduct(String endpoint, Map<String, String> formParams, File file, String fileFieldName) {
-
-		apiClient.withAuthDefaultTestAccount();
 
 		return apiClient.post(ADD_PRODUCT_ENDPOINT, formParams, file, fileFieldName);
 	}
@@ -49,8 +50,15 @@ public class ProductClient {
 	}
 
 	public Response deleteProductRawResponse(String productId) {
-		apiClient.withAuthDefaultTestAccount();
 		return apiClient.delete(DELETE_PRODUCT, productId);
+	}
+
+	public GetProductsResponse getProductsResponse() {
+		return apiClient.get(ALL_PRODUCT_ENDPOINT).as(GetProductsResponse.class);
+	}
+
+	public Response getProductsRawResponse() {
+		return apiClient.get(ALL_PRODUCT_ENDPOINT);
 	}
 
 }

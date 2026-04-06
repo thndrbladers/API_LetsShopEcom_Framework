@@ -6,7 +6,7 @@ import io.cucumber.java.Scenario;
 
 import com.apiletsshopecom.clients.ProductClient;
 import com.apiletsshopecom.payloads.response.DeleteProductResponse;
-import com.letsshopecom.utils.ScenarioContext;
+import com.apiletsshopecom.utils.ScenarioContext;
 
 public class Hooks {
 	private ScenarioContext context;

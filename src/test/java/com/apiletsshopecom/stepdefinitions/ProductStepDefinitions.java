@@ -1,7 +1,9 @@
-package com.letsshopecom.stepdefinitions;
+package com.apiletsshopecom.stepdefinitions;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -11,8 +13,10 @@ import com.apiletsshopecom.clients.ProductClient;
 import com.apiletsshopecom.config.ConfigManager;
 import com.apiletsshopecom.payloads.request.AddProductRequest;
 import com.apiletsshopecom.payloads.response.AddProductResponse;
+import com.apiletsshopecom.payloads.response.GetProductsResponse;
+import com.apiletsshopecom.payloads.response.Product;
+import com.apiletsshopecom.utils.ScenarioContext;
 import com.github.javafaker.Faker;
-import com.letsshopecom.utils.ScenarioContext;
 
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -25,6 +29,7 @@ public class ProductStepDefinitions {
 	private AddProductResponse addProductResponse;
 	private Response rawResponse;
 	private final ScenarioContext context;
+	private GetProductsResponse getProductsResponse;
 
 	public ProductStepDefinitions(ScenarioContext context) {
 		this.context = context;
@@ -38,6 +43,7 @@ public class ProductStepDefinitions {
 
 	@When("the user sends a {string} request with form-data to the endpoint {string}")
 	public void the_user_sends_a_request_with_form_data_to_the_endpoint(String reqType, String endpoint) {
+		System.out.println("dassaasdasd");
 
 		if (reqType.equalsIgnoreCase("post") && endpoint.contains("add-product")) {
 			Assert.assertEquals(endpoint, productClient.getAddProductEndpoint());
@@ -61,6 +67,16 @@ public class ProductStepDefinitions {
 
 			context.setRawResponse(rawResponse);
 
+		} else if (reqType.equalsIgnoreCase("get") && endpoint.contains("get-all-products")) {
+			Assert.assertEquals(endpoint, productClient.getAllProductEndpoint());
+
+			getProductsResponse = new GetProductsResponse();
+			rawResponse = productClient.getProductsRawResponse();
+			context.setRawResponse(rawResponse);
+			getProductsResponse = rawResponse.as(GetProductsResponse.class);
+			
+			System.out.println("dassaasdasd");
+
 		}
 
 	}
@@ -68,6 +84,28 @@ public class ProductStepDefinitions {
 	@Then("the response should contain a {string}")
 	public void the_response_should_contain_a(String productId) {
 		Assert.assertNotNull(productId, addProductResponse.getProductId());
+	}
+
+	@Then("the response should contain a list of products")
+	public void the_response_should_contain_a_list_of_products() {
+
+		Assert.assertNotNull(getProductsResponse);
+
+	}
+
+	@Then("each product should have a valid _id, productName, and productPrice")
+	public void each_product_should_have_a_valid__id_product_name_and_product_price() {
+		List<Product> product = getProductsResponse.getData();
+
+		Iterator<Product> productIT = product.iterator();
+		while (productIT.hasNext()) {
+			Product prod = productIT.next();
+			Assert.assertNotNull(prod.get_id());
+			Assert.assertNotNull(prod.getProductName());
+			Assert.assertNotNull(prod.getProductPrice());
+
+		}
+
 	}
 
 }

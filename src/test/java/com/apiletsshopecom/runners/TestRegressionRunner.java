@@ -1,4 +1,4 @@
-package com.letsshopecom.runners;
+package com.apiletsshopecom.runners;
 
 import org.junit.AfterClass;
 import org.junit.runner.RunWith;
@@ -9,7 +9,7 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", glue = { "com.letsshopecom.stepdefinitions",
+@CucumberOptions(features = "src/test/resources/features", glue = { "com.apiletsshopecom.stepdefinitions",
 		"com.apiletsshopecom.hooks" }, plugin = { "json:target/jsonReports/cucumber-report.json",
 				"pretty" }, tags = "@Regression")
 public class TestRegressionRunner {
