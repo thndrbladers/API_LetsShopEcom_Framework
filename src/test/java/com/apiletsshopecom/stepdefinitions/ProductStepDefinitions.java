@@ -107,9 +107,23 @@ public class ProductStepDefinitions {
 			Product prod = productIT.next();
 			Assert.assertNotNull(prod.get_id());
 			Assert.assertNotNull(prod.getProductName());
-			Assert.assertNotNull(Integer.valueOf(prod.getProductPrice()));
+			Assert.assertNotNull(prod.getProductPrice() > 0);
 
 		}
+
+	}
+
+	@Given("the user has a valid productId")
+	public void the_user_has_a_valid_product_id() {
+		the_user_is_authorized_with_a_valid_token();
+
+	}
+
+	@When("the user sends a {string} request to the delete endpoint {string}")
+	public void the_user_sends_a_request_to_the_delete_endpoint(String reqType, String endpoint) {
+		the_user_sends_a_request_with_form_data_to_the_endpoint("POST", productClient.getAddProductEndpoint());
+		rawResponse = productClient.deleteProductRawResponse(addProductResponse.getProductId());
+		context.setRawResponse(rawResponse);
 
 	}
 

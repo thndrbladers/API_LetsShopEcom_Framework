@@ -18,3 +18,10 @@ So that I can view the catalog and select items to purchase.
     Then the API should respond with status code 200
     And the response should contain a list of products
     And each product should have a valid _id, productName, and productPrice
+
+  Scenario: Delete a product from the catalog
+    Given the user is authorized with a valid token
+    And the user has a valid productId
+    When the user sends a "DELETE" request to the delete endpoint "/api/ecom/product/delete-product"
+    Then the API should respond with status code 200
+    And the response message should be "Product Deleted Successfully"

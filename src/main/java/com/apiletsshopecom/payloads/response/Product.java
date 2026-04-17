@@ -1,7 +1,10 @@
 package com.apiletsshopecom.payloads.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
 
+	@JsonProperty("_id")
 	private String _id;
 	private String productName;
 	private String productCategory;
@@ -14,6 +17,7 @@ public class Product {
 	private boolean productStatus;
 	private String productFor;
 	private String productAddedBy;
+	@JsonProperty("__v")
 	private int __v;
 
 	public String get_id() {
