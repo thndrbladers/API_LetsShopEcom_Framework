@@ -33,12 +33,7 @@ public class ProductStepDefinitions {
 
 	public ProductStepDefinitions(ScenarioContext context) {
 		this.context = context;
-	}
-
-	@Given("the user is authorized with a valid token")
-	public void the_user_is_authorized_with_a_valid_token() {
 		productClient = new ProductClient();
-
 	}
 
 	@When("the user sends a {string} request with form-data to the endpoint {string}")
@@ -115,7 +110,6 @@ public class ProductStepDefinitions {
 
 	@Given("the user has a valid productId")
 	public void the_user_has_a_valid_product_id() {
-		the_user_is_authorized_with_a_valid_token();
 
 	}
 
