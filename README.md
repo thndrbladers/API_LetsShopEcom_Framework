@@ -1,7 +1,7 @@
 # 🛒 API_LetsShopEcom_Framework
 ### Cucumber · JUnit · REST Assured · Java — BDD API Automation Framework
 
-A production-style **BDD API test automation framework** built for the *LetsShop E-commerce* REST API. It covers the full e-commerce flow — **User Registration → Login → Product Management → Cart** — and is designed for maintainability, scalability, and CI/CD readiness.
+A production-style **BDD API test automation framework** built for the *LetsShop E-commerce* REST API. It covers the full e-commerce flow — **User Registration → Login → Product Management →** Cart Operations — with clean separation of concerns, environment-aware configuration, and rich HTML reporting.
 
 ---
 
@@ -136,7 +136,7 @@ API_LetsShopEcom_Framework/
 ## Core Concepts Explained
 
 ### 1. Feature File
-A `.feature` file is written in **Gherkin** — a plain English, structured language that describes application behaviour from a user's perspective. It lives in `src/test/resources/features/` and is the **single source of truth** for what is being tested.
+A `.feature` file is written in **Gherkin** — a plain English, structured language that describes application behaviour from a user's perspective. It lives in `src/test/resources/features/` and acts as both the **test specification and living documentation**.
 
 ```gherkin
 Feature: As a registered user,
@@ -247,7 +247,7 @@ Scenario: User should be able to login with valid credentials
 
 ### 6. Step Definitions
 
-Step definitions are Java methods **annotated with Gherkin keywords** (`@Given`, `@When`, `@Then`) that contain the actual automation logic. Cucumber matches each Gherkin step to a method using regex or Cucumber expressions.
+Step definitions are Java methods **annotated with Gherkin keywords** (`@Given`, `@When`, `@Then`) that contain the actual automation logic. Cucumber matches each Gherkin step to a method using regex or Cucumber Expression patterns.
 
 ```java
 // CommonStepDefinitions.java
@@ -334,7 +334,7 @@ public class TestRegressionRunner {
 
 ### 9. ApiClient
 
-`ApiClient` is the **central HTTP engine** of the framework. It wraps REST Assured's `RequestSpecification` with a reusable base configuration — base URL, content type, logging, and auth — so every domain client inherits consistent behaviour without repetition.
+`ApiClient` is the **central HTTP engine** of the framework. It wraps REST Assured's `RequestSpecification` with a reusable base configuration — base URL, content type, logging, and auth — so no step definition ever builds a raw request from scratch.
 
 ```java
 // Initialised once per scenario via PicoContainer
@@ -385,7 +385,7 @@ public Response addProduct(Map<String, String> formParams, File productImage) {
 
 ### 11. Payload POJOs (Request/Response)
 
-POJOs (Plain Old Java Objects) model the **JSON body** of requests and responses. Jackson (`ObjectMapper`) handles serialization (POJO → JSON) and deserialization (JSON → POJO) automatically via getters/setters.
+POJOs (Plain Old Java Objects) model the **JSON body** of requests and responses. Jackson (`ObjectMapper`) handles serialization (POJO → JSON) and deserialization (JSON → POJO) automatically via getter/setter conventions.
 
 ```java
 // LoginRequest.java — sent as the POST body
@@ -489,6 +489,13 @@ public class CommonStepDefinitions {
 ```
 
 > **No static variables. No thread-local hacks.** PicoContainer manages the lifecycle cleanly and safely supports parallel execution.
+
+**Key Takeaways:**
+
+- ✅ **PicoContainer creates `ScenarioContext` once per scenario** — you never call `new ScenarioContext()` yourself.
+- ✅ **Constructor injection** is the only mechanism — any class that lists `ScenarioContext` in its constructor gets the shared instance automatically.
+- ✅ **No static fields, no ThreadLocal** — this design is clean and naturally supports parallel test execution.
+- ✅ **`Hooks.java` also uses the same injection** — so `@After` hooks can access data (like `productId`) stored during the scenario steps.
 
 ---
 
