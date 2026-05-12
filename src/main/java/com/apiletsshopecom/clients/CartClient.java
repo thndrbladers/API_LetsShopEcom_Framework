@@ -3,6 +3,7 @@ package com.apiletsshopecom.clients;
 import java.util.Map;
 
 import com.apiletsshopecom.payloads.request.AddToCartResponse;
+import com.apiletsshopecom.payloads.response.GetCartProductsResponse;
 
 import io.restassured.response.Response;
 
@@ -10,7 +11,7 @@ public class CartClient {
 
 	private final static String ADD_TO_CART_ENDPOINT = "/api/ecom/user/add-to-cart";
 
-	private final static String VIEW_CART = "/api/ecom/user/get-cart-products/";
+	private final static String GET_CART_PRODUCTS = "/api/ecom/user/get-cart-products";
 
 	private ApiClient apiClient;
 
@@ -23,8 +24,8 @@ public class CartClient {
 		return ADD_TO_CART_ENDPOINT;
 	}
 
-	public String getViewCart() {
-		return VIEW_CART;
+	public String getCartProductsEndpoint() {
+		return GET_CART_PRODUCTS;
 	}
 
 	public Response addToCartRaw(Object body) {
@@ -34,7 +35,11 @@ public class CartClient {
 	}
 
 	public Response getViewCartRaw(String userId) {
-		return apiClient.get(VIEW_CART + userId);
+
+		System.out.println(userId);
+		System.out.println(apiClient.get(GET_CART_PRODUCTS + "/" + userId).asPrettyString());
+
+		return apiClient.get(GET_CART_PRODUCTS + "/" + userId);
 	}
 
 	/*

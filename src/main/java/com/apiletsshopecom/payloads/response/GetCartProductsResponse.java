@@ -2,7 +2,7 @@ package com.apiletsshopecom.payloads.response;
 
 import java.util.List;
 
-public class ViewCartResponse {
+public class GetCartProductsResponse {
 
 	private List<Product> products;
 	private int count;
