@@ -23,3 +23,10 @@ So that I can stage my items before finalizing a purchase.
     When the user sends a "POST" request to the cart endpoint "/api/ecom/user/add-to-cart"
     Then the API should respond with status code 200
     And the response message should be "Product Added To Cart"
+
+  Scenario: Retrieve all items in the user's cart
+    Given the user is authorized with a valid token
+    And the user has items in their cart
+    When the user sends a "GET" request to the endpoint "/api/ecom/user/get-cart"
+    Then the API should respond with status code 200
+    And the response should display the correct list of products currently in the cart

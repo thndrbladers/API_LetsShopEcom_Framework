@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 
@@ -50,6 +51,14 @@ public class CartStepDefinitions {
 
 		context.setRawResponse(rawResponse);
 
+	}
+
+	@Given("the user has items in their cart")
+	public void the_user_has_items_in_their_cart() {
+	}
+
+	@Then("the response should display the correct list of products currently in the cart")
+	public void the_response_should_display_the_correct_list_of_products_currently_in_the_cart() {
 	}
 
 }
